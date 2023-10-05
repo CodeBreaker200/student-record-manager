@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="js/jquery.min.js"></script>
+
+    <script>
+        var student = [];
+        var index = -1;
+
+        $(document).ready(function () {
+            $("#eng,#math,#sci").change(function () {
+                calculate();
+            });
+            $("#btnadd").click(function () {
+                Adddata();
+            });
+            $("#btnupdate").click(function () {
+                Updatedata();
+            });
+        });
+
+        function calculate() {
+            var p =Number($("#eng").val());
+            var q = Number($("#math").val());
+            var r = Number($("#sci").val());
+            var t = p + q + r;
+            var s = ((t / 300) * 100).toFixed(2);
+            var grad="";
+            if(s>35){
+                grad="Pass";
+            }
+            else{
+                grad="Fail";
+            }
+            $("#total").val(t);
+            $("#percentage").val(s);
+            $("#grad").val(grad);
+        };
+
+
+        function Adddata() {
+            var a = $("#rollnum").val();
+            var b = $("#name").val();
+            var c = $("#eng").val();
+            var d = $("#math").val();
+            var e = $("#sci").val();
+            var f = $("#total").val();
+            var g = $("#percentage").val();
+            var h = $("#grad").val();
+
+            var st = { "rno": a, "name": b, "english": c, "Math": d, "science": e, "total": f, "perentage": g, "grad": h };
+            student.push(st);
+            alert("Student added Succesfully!");
+            Clear();
+            Display();
+        };
+
+        function Clear() {
+            $("#rollnum").val("");
+            $("#name").val("");
+            $("#eng").val("");
+            $("#math").val("");
+            $("#sci").val("");
+            $("#total").val("");
+            $("#percentage").val("");
+            $("#grad").val("");
+        };
+
+        function Display(){
+            $("#tbldata").empty();
+            $.each(student, function (i, d) {
+                $("#tbldata").append ("<tr><td>" + d.rno + "</td><td>" + d.name + "</td><td>" + d.english + "</td><td>" + d.Math + "</td><td>"
+                    + d.science + "</td><td>" + d.total + "</td><td>" + d.perentage + "</td><td>" + d.grad +"</td><td>"+"<button class='btn btn-outline-primary' onclick='view(" + i + ")'>View</button>"
+                        +"</td><td>"+"<button class='btn btn-outline-danger' onclick='Delete(" + i + ")'>Delete</button>"+"</tr><td>");
+            });
+        };
+
+
+        function view(p){
+            index=p;
+            var st=student[index];
+            $("#rollnum").val(st.rno);
+            $("#name").val(st.name);
+            $("#eng").val(st.english);
+            $("#math").val(st.Math);
+            $("#sci").val(st.science);
+            $("#total").val(st.total);
+            $("#percentage").val(st.perentage);
+            $("#grad").val(st.grad);
+        };
+
+        function Delete(p) {
+            student.splice(p, 1);
+            alert("data deleted succesfully!");
+            Display();
+        }
+
+        function Updatedata() {
+            var a = $("#rollnum").val();
+            var b = $("#name").val();
+            var c = $("#eng").val();
+            var d = $("#math").val();
+            var e = $("#sci").val();
+            var f = $("#total").val();
+            var g = $("#percentage").val();
+            var h = $("#grad").val();
+
+            var st = { "rno": a, "name": b, "english": c, "Math": d, "science": e, "total": f, "perentage": g, "grad": h };
+           student[index]=st;
+            alert("Student Updated Succesfully!");
+            Clear();
+            Display();
+        };
+
+    </script>
+</head>
+
+<body>
+
+    <div class="col-md-4 card my-4" style="margin-left: 10%;">
+        <div class="card-body">
+            <label for="rollnum">Roll Number</label>
+            <input type="text" class="form-control" name="" id="rollnum">
+
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="" id="name">
+
+            <label for="eng">English</label>
+            <input type="text" class="form-control" name="" id="eng">
+
+            <label for="math">Math</label>
+            <input type="text" class="form-control" name="" id="math">
+
+            <label for="sci">Science</label>
+            <input type="text" class="form-control" name="" id="sci">
+
+            <label for="total">Tootal</label>
+            <input type="text" class="form-control" name="" id="total">
+
+            <label for="percentage">Percentage</label>
+            <input type="text" class="form-control" name="" id="percentage">
+
+            <label for="grad">Grad</label>
+            <input type="text" class="form-control" name="" id="grad">
+        </div>
+        <div class="card-footer">
+            <button class="btn-outline-success btn-block" id="btnadd">Add</button>
+            <button class="btn-outline-danger btn-block" id="btnupdate">Update</button>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <table class="table col-md-4">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Name</th>
+                    <th>English</th>
+                    <th>Math</th>
+                    <th>Science</th>
+                    <th>Total</th>
+                    <th>Percentage</th>
+                    <th>Grad</th>
+                    <th colspan="2">Action</th>
+                </tr>
+            </thead>
+            <tbody id="tbldata"></tbody>
+        </table>
+    </div>
+</body>
+
+</html>
